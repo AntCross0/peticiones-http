@@ -1,5 +1,6 @@
 const jokeurl =  "https://api.chucknorris.io/jokes/random";
-
+const cloudUrl = 'https://api.cloudinary.com/v1_1/diccwoblx/upload';
+const cloudKey = 'da96tjlc';
 
 export const obtenerChiste = async () => {
     
@@ -35,6 +36,35 @@ export const obtenerUsuarios = async () => {
     }
 }
 
+
+export const uploadFile = async ( file ) => {
+    //formData es por asi decirlo un formulario ya hecho
+    const formData = new FormData();
+    formData.append('upload_preset', cloudKey);
+    formData.append('file', file);
+
+    try {
+
+        const resp = await fetch(cloudUrl, {
+            method: 'POST',
+            body: formData
+
+        });
+
+        
+         if(resp.ok) {
+          const cloudResp = await resp.json();
+          return cloudResp.secure_url;
+        }
+        else {
+            throw await resp.json();
+        }
+
+        
+    } catch (err) {
+        throw err
+    }
+}
 
 
 // fetch( jokeurl ).then( resp => {
